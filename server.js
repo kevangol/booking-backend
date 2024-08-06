@@ -67,6 +67,8 @@ if (cluster.isMaster) {
 	// ------------------------      GLOBAL MIDDLEWARE -------------------------
 	app.use(limiter);
 
+	app.use(express.static(path.join(__dirname, "public")));
+
 	app.use(actuator({ infoGitMode: "full" }));
 
 	app.use(

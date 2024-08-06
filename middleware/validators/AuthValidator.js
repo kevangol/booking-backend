@@ -17,7 +17,7 @@ exports.signIn = [...authValidators];
 
 exports.signUp = [...authValidators];
 
-exports.verifyOTP = [...mobileNumberBodyValidator, ...otpBodyValidator];
+exports.verifyOTP = [...mobileNumberBodyValidator, ...otpBodyValidator, body("deviceType", "deviceType is required").trim().notEmpty(), body("appVersion", "appVersion is required").trim().notEmpty()];
 
 exports.forgotPassword = [...mobileNumberBodyValidator];
 
