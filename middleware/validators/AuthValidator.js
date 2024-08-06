@@ -1,57 +1,24 @@
 const { body } = require("express-validator");
 
-const emailBodyValidator = [
-	body("email", "email is invalid")
-		.trim()
-		.notEmpty()
-		.isEmail(),
-]
+const mobileNumberBodyValidator = [body("mobileNumber", "mobileNumber is invalid").trim().notEmpty().isMobilePhone()];
 
-const passwordBodyValidator = [
-	body("password", "password required")
-		.trim()
-		.notEmpty()
-		.isLength({ min: 8 })
-		.withMessage("password must have minimum 8 characters"),
-]
+const passwordBodyValidator = [body("password", "password required").trim().notEmpty().isLength({ min: 8 }).withMessage("password must have minimum 8 characters")];
 
-const otpBodyValidator = [
-	body("otp", "OTP is required")
-		.isInt()
-		.toInt()
-]
+const otpBodyValidator = [body("otp", "OTP is required").isInt().toInt()];
 
 const authValidators = [
-	...emailBodyValidator,
+	...mobileNumberBodyValidator,
 	...passwordBodyValidator,
-
-	body("deviceToken", "deviceToken is required").trim().notEmpty(),
 	body("deviceType", "deviceType is required").trim().notEmpty(),
 	body("appVersion", "appVersion is required").trim().notEmpty(),
-]
-
-exports.signIn = [
-	...authValidators,
 ];
 
-exports.signUp = [
-	...authValidators,
+exports.signIn = [...authValidators];
 
-	body("firstName", "firstName is required").trim().notEmpty(),
-	body("lastName", "lastName is required").trim().notEmpty(),
-];
+exports.signUp = [...authValidators];
 
-exports.verifyOTP = [
-	...emailBodyValidator,
-	...otpBodyValidator,
-];
+exports.verifyOTP = [...mobileNumberBodyValidator, ...otpBodyValidator];
 
-exports.forgotPassword = [
-	...emailBodyValidator,
-]
+exports.forgotPassword = [...mobileNumberBodyValidator];
 
-exports.resetPassword = [
-	...emailBodyValidator,
-	...passwordBodyValidator,
-	...otpBodyValidator,
-]
+exports.resetPassword = [...mobileNumberBodyValidator, ...passwordBodyValidator, ...otpBodyValidator];

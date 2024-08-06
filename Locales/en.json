@@ -77,11 +77,11 @@
 	"VALIDATION": {
 		"EXISTS": {
 			"USER": "User already exist!",
-			"EMAIL": "Email is already registered!"
+			"MOBILE_NUMBER": "Mobile number is already registered!"
 		},
 		"NOT_FOUND": {
 			"USER": "We can't find request User !",
-			"EMAIL": "We can't find this email address!",
+			"MOBILE_NUMBER": "We can't find this Mobile Number !",
 			"ACCOUNT": "We can't find this account"
 		},
 		"PASSWORD": {
@@ -96,7 +96,7 @@
 	},
 
 	"PROCESS": {
-		"EMAIL_SENT": "We have sent email to your account",
-		"EMAIL_SENT_ACCOUNT": "We have sent email to %s"
+		"MSG_SENT": "We have sent message to your mobile number",
+		"MSG_SENT_ACCOUNT": "We have sent message to %s"
 	}
 }

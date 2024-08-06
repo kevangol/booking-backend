@@ -30,16 +30,15 @@ module.exports = class {
 		);
 	};
 
-	findUserByEmail = (email, projection, option) => {
+	findUserByPhoneNumber = (mobileNumber, projection, option) => {
 		return this.findUser(
 			{
-				email,
+				mobileNumber,
 			},
 			projection,
 			option ?? {
-				lean: true
+				lean: true,
 			}
-		)
-	}
-
+		);
+	};
 };
