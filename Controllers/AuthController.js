@@ -73,7 +73,7 @@ module.exports = class {
 
 			const newSession = await UserSessionModel.addSession({ ...userDetails }, userDetails._id);
 
-			return res.handler.success({ ...newSession }, "VALIDATION.OTP.VERIFIED");
+			return res.handler.success({ token: newSession?.authToken }, "VALIDATION.OTP.VERIFIED");
 		} catch (error) {
 			return res.handler.serverError(error);
 		}

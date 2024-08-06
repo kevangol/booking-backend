@@ -4,7 +4,8 @@
 	"description": "Base structure for Node.js Backend",
 	"main": "server.js",
 	"scripts": {
-		"start": "nodemon server.js",
+		"start": "node server.js",
+		"kevan-mode": "nodemon server.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "echo \"No build process needed\""
 	},
