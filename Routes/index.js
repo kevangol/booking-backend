@@ -1,8 +1,24 @@
+const { swaggerUi, specs } = require("../swagger");
+
 module.exports = (app) => {
-	app.get("/", (req, res) => {
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+	/**
+	 * @swagger
+	 * /api/v1/:
+	 *   get:
+	 *     tags:
+	 *       - Check Server
+	 *     summary:
+	 *     responses:
+	 *       200:
+	 *         description: A successful response
+	 */
+	app.get("/api/v1/", (req, res) => {
 		res.status(STATUS_CODES.SUCCESS).send("Welcome to " + process.env.PROJECT_NAME);
 	});
 
-	app.use("/auth", require("./AuthRoute"))
-	app.use("/user", require("./UserRoute"))
+	app.use("/api/v1/auth", require("./AuthRoute"));
+
+	app.use("/api/v1/user", require("./UserRoute"));
 };
