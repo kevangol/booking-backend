@@ -1,38 +1,48 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const { AUTHTYPES } = require("../../Configs/constants");
+const { trim } = require("validator");
 
 const UserSchema = new mongoose.Schema(
 	{
-		firstName: {
+		fullName: {
 			type: String,
-			required: true,
-			trim: true,
-		},
-		lastName: {
-			type: String,
-			required: true,
 			trim: true,
 		},
 		email: {
 			type: String,
-			trim: true,
-			required: true,
-			unique: true,
+			default: "",
 		},
-		isActive: {
+		isVerifiedEmail: {
 			type: Boolean,
-			required: true,
-			default: true,
-		},
-		isEmailVerified: {
-			type: Boolean,
-			required: true,
 			default: false,
+		},
+		countryCode: {
+			type: String,
+			default: "91",
+		},
+		mobileNumber: {
+			type: String,
+			unique: true,
+			required: function () {
+				return this.authType === AUTHTYPES.MOBILE;
+			},
+			validate: {
+				validator: function (v) {
+					return /^\d{10}$/.test(v); // Example regex for 10-digit mobile numbers
+				},
+				message: (props) => `${props.value} is not a valid mobile number!`,
+			},
+			trim: true,
 		},
 		password: {
 			type: String,
 			required: true,
 			trim: true,
+		},
+		isVerified: {
+			type: Boolean,
+			default: false,
 		},
 		profileImage: {
 			type: String,
@@ -42,6 +52,10 @@ const UserSchema = new mongoose.Schema(
 			type: Number,
 			trim: true,
 		},
+		isActive: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	{
 		timestamps: {
@@ -49,7 +63,7 @@ const UserSchema = new mongoose.Schema(
 			updatedAt: "updated_at",
 		},
 	}
-)
+);
 
 UserSchema.pre("save", async function (next) {
 	this.password = await bcrypt.hash(this.password, 12);
