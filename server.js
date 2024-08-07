@@ -15,101 +15,86 @@ const { default: rateLimit } = require("express-rate-limit");
 
 const numCPUs = os.cpus().length;
 
-if (cluster.isMaster) {
-	console.log(`Master ${process.pid} is running`);
+// ---------------------------    SERVER CONFIGS ----------------------------------
+// SSL CONFIG
+const port = process.env.PORT || 9000;
+const app = express();
+const server = http.createServer(app);
 
-	// Fork workers
-	for (let i = 0; i < numCPUs; i++) {
-		cluster.fork();
-	}
+// GLOBAL SETTINGS FILES
+require("./Configs/globals");
 
-	cluster.on("exit", (worker, code, signal) => {
-		console.log(`Worker ${worker.process.pid} died`);
-		console.log("Starting a new worker");
-		cluster.fork();
-	});
-} else {
-	// ---------------------------    SERVER CONFIGS ----------------------------------
-	// SSL CONFIG
-	const port = process.env.PORT || 9000;
-	const app = express();
-	const server = http.createServer(app);
-
-	// GLOBAL SETTINGS FILES
-	require("./Configs/globals");
-
-	// --------------------------   LANGUAGE    ----------------------------------------
-	// Define unique Key - pair in Locales / Messages.js
-	// It will add entry in respective json files
-	/* By default language is set to english  User can change by  passing  language in
+// --------------------------   LANGUAGE    ----------------------------------------
+// Define unique Key - pair in Locales / Messages.js
+// It will add entry in respective json files
+/* By default language is set to english  User can change by  passing  language in
 	Header :
 	Accept-Language : 'en'
 	Query : 
 	url?lang=en
 */
-	const limiter = rateLimit({
-		windowMs: 15 * 60 * 1000, // 15 minutes
-		max: 100, // limit each IP to 100 requests per windowMs
-		message: "Too many requests from this IP, please try again after 15 minutes",
-	});
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // limit each IP to 100 requests per windowMs
+	message: "Too many requests from this IP, please try again after 15 minutes",
+});
 
-	const language = require("i18n");
-	language.configure({
-		locales: ["en"],
-		defaultLocale: "en",
-		autoReload: true,
-		directory: __dirname + "/Locales",
-		queryParameter: "lang",
-		objectNotation: true,
-		syncFiles: true,
-	});
+const language = require("i18n");
+language.configure({
+	locales: ["en"],
+	defaultLocale: "en",
+	autoReload: true,
+	directory: __dirname + "/Locales",
+	queryParameter: "lang",
+	objectNotation: true,
+	syncFiles: true,
+});
 
-	// ------------------------      GLOBAL MIDDLEWARE -------------------------
-	app.use(limiter);
+// ------------------------      GLOBAL MIDDLEWARE -------------------------
+app.use(limiter);
 
-	app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
-	app.use(actuator({ infoGitMode: "full" }));
+app.use(actuator({ infoGitMode: "full" }));
 
-	app.use(
-		bodyParser.json({
-			type: ["application/json", "application/encrypted-json", "multipart/form-data; boundary=<calculated when request is sent>"],
-		})
-	);
-	// app.use(bodyParser.json()); // ALLOW APPLICATION JSON
-	app.use(express.urlencoded({ extended: true })); // ALLOW APPLICATION JSON
-	app.use(bodyParser.urlencoded({ extended: false })); // ALLOW URL ENCODED PARSER
-	app.use(cors()); // ALLOWED ALL CROSS ORIGIN REQUESTS
-	app.use(express.static(__dirname + "/Assets")); // SERVE STATIC IMAGES FROM ASSETS FOLDER
-	app.use(express.static(__dirname + "/Logs")); // SERVE STATIC IMAGES FROM ASSETS FOLDER
-	app.use(language.init); // MULTILINGUAL SETUP
-	app.set("view engine", "ejs"); //Set ejs view engine
-	app.set("views", __dirname + "/Views");
+app.use(
+	bodyParser.json({
+		type: ["application/json", "application/encrypted-json", "multipart/form-data; boundary=<calculated when request is sent>"],
+	})
+);
+// app.use(bodyParser.json()); // ALLOW APPLICATION JSON
+app.use(express.urlencoded({ extended: true })); // ALLOW APPLICATION JSON
+app.use(bodyParser.urlencoded({ extended: false })); // ALLOW URL ENCODED PARSER
+app.use(cors()); // ALLOWED ALL CROSS ORIGIN REQUESTS
+app.use(express.static(__dirname + "/Assets")); // SERVE STATIC IMAGES FROM ASSETS FOLDER
+app.use(express.static(__dirname + "/Logs")); // SERVE STATIC IMAGES FROM ASSETS FOLDER
+app.use(language.init); // MULTILINGUAL SETUP
+app.set("view engine", "ejs"); //Set ejs view engine
+app.set("views", __dirname + "/Views");
 
-	app.use("/images", express.static(path.join(__dirname, "Assets/Images/Users")));
+app.use("/images", express.static(path.join(__dirname, "Assets/Images/Users")));
 
-	// ------------------------    RESPONSE HANDLER    -------------------
-	app.use((req, res, next) => {
-		const ResponseHandler = require("./Configs/responseHandler");
-		res.handler = new ResponseHandler(req, res);
-		next();
-	});
+// ------------------------    RESPONSE HANDLER    -------------------
+app.use((req, res, next) => {
+	const ResponseHandler = require("./Configs/responseHandler");
+	res.handler = new ResponseHandler(req, res);
+	next();
+});
 
-	// --------------------------    ROUTES    ------------------
-	const appRoutes = require("./Routes");
-	const chalk = require("chalk");
-	appRoutes(app);
+// --------------------------    ROUTES    ------------------
+const appRoutes = require("./Routes");
+const chalk = require("chalk");
+appRoutes(app);
 
-	// --------------------------    GLOBAL ERROR HANDLER    ------------------
-	app.use((err, req, res, next) => {
-		if (res.headersSent) {
-			return next(err);
-		}
-		res.handler.serverError(err);
-	});
+// --------------------------    GLOBAL ERROR HANDLER    ------------------
+app.use((err, req, res, next) => {
+	if (res.headersSent) {
+		return next(err);
+	}
+	res.handler.serverError(err);
+});
 
-	// --------------------------    START SERVER    ---------------------
-	server.listen(port, () => {
-		console.log(chalk.bold.cyanBright(`\nServer started on ${chalk.white.bold(port)} :) \n`));
-	});
-}
+// --------------------------    START SERVER    ---------------------
+server.listen(port, () => {
+	console.log(chalk.bold.cyanBright(`\nServer started on ${chalk.white.bold(port)} :) \n`));
+});

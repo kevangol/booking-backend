@@ -5,7 +5,7 @@
 	"main": "server.js",
 	"scripts": {
 		"start": "node server.js",
-		"kevan-mode": "nodemon server.js",
+		"six-dev-mode": "nodemon server.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "echo \"No build process needed\""
 	},
