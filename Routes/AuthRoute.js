@@ -13,12 +13,12 @@ const router = express.Router();
  *   post:
  *     tags:
  *       - Authentication
- *     summary: Retrieve data from new endpoint 1
+ *     summary:
  *     responses:
  *       200:
  *         description: Successful response
  */
-router.route("/signIn").post(AuthValidator.signIn, Authentication.blank, AuthController.signIn);
+router.route("/signIn").post(AuthValidator.signIn, Authentication.all, AuthController.signIn);
 
 /**
  * @swagger
@@ -26,7 +26,7 @@ router.route("/signIn").post(AuthValidator.signIn, Authentication.blank, AuthCon
  *   post:
  *     tags:
  *       - Authentication
- *     summary: Retrieve data from new endpoint 1
+ *     summary:
  *     requestBody:
  *       required: true
  *       content:
@@ -40,7 +40,28 @@ router.route("/signIn").post(AuthValidator.signIn, Authentication.blank, AuthCon
  *       200:
  *         description: Successful response
  */
-router.route("/signUp").post(AuthValidator.signUp, Authentication.blank, AuthController.signUp);
+
+/**
+ * @swagger
+ * /api/v1/auth/signUp:
+ *   put:
+ *     tags:
+ *       - Authentication
+ *     summary: Resend otp for user , When user have register but OTP is expired.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mobileNumber:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
+router.route("/signUp").post(AuthValidator.signUp, Authentication.all, AuthController.signUp).put(AuthValidator.resendSignUpOtp, Authentication.all, AuthController.resendSignUpOtp);
 
 /**
  * @swagger
@@ -48,12 +69,12 @@ router.route("/signUp").post(AuthValidator.signUp, Authentication.blank, AuthCon
  *   post:
  *     tags:
  *       - Authentication
- *     summary: check server running or not
+ *     summary:
  *     responses:
  *       200:
- *         description: A successful response
+ *         description:
  */
-router.route("/verifyOtp").post(AuthValidator.verifyOTP, Authentication.blank, AuthController.verifyOtp);
+router.route("/verifyOtp").post(AuthValidator.verifyOTP, Authentication.all, AuthController.verifyOtp);
 
 /**
  * @swagger
@@ -61,14 +82,38 @@ router.route("/verifyOtp").post(AuthValidator.verifyOTP, Authentication.blank, A
  *   post:
  *     tags:
  *       - Authentication
- *     summary: check server running or not
+ *     summary:
  *     responses:
  *       200:
- *         description: A successful response
+ *         description:
+ */
+/**
+ * @swagger
+ * /api/v1/auth/forgotPassword:
+ *   put:
+ *     tags:
+ *       - Authentication
+ *     summary: Reset Password
+ *     responses:
+ *       200:
+ *         description:
  */
 router
 	.route("/forgotPassword")
-	.post(AuthValidator.forgotPassword, Authentication.blank, AuthController.forgotPassword)
-	.put(AuthValidator.resetPassword, Authentication.blank, AuthController.resetPassword);
+	.post(AuthValidator.forgotPassword, Authentication.all, AuthController.forgotPassword)
+	.put(AuthValidator.resetPassword, Authentication.all, AuthController.resetPassword);
+
+/**
+ * @swagger
+ * /api/v1/auth/verify/forgotPasswordOTP:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary:
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/verify/forgotPasswordOTP").post(AuthValidator.verifyForgotPasswordOtp, Authentication.all, AuthController.verifyForgetPasswordOtp);
 
 module.exports = router;

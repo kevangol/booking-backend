@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { AUTHTYPES } = require("../../Configs/constants");
-const { trim } = require("validator");
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -43,6 +42,9 @@ const UserSchema = new mongoose.Schema(
 		isVerified: {
 			type: Boolean,
 			default: false,
+		},
+		birthdate: {
+			type: Date,
 		},
 		profileImage: {
 			type: String,
