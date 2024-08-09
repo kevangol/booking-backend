@@ -13,7 +13,26 @@ const router = express.Router();
  *   post:
  *     tags:
  *       - Authentication
- *     summary:
+ *     summary: Sign in with mobile number and password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mobileNumber:
+ *                 type: string
+ *                 description: The user's mobile number
+ *               password:
+ *                 type: string
+ *                 description: The user's password
+ *               deviceType:
+ *                 type: string
+ *                 description: The user's device type
+ *               appVersion:
+ *                 type: string
+ *                 description: The user's app version
  *     responses:
  *       200:
  *         description: Successful response
@@ -26,7 +45,7 @@ router.route("/signIn").post(AuthValidator.signIn, Authentication.all, AuthContr
  *   post:
  *     tags:
  *       - Authentication
- *     summary:
+ *     summary: Sign in with mobile number and password
  *     requestBody:
  *       required: true
  *       content:
@@ -36,18 +55,27 @@ router.route("/signIn").post(AuthValidator.signIn, Authentication.all, AuthContr
  *             properties:
  *               mobileNumber:
  *                 type: string
+ *                 description: The user's mobile number
+ *               password:
+ *                 type: string
+ *                 description: The user's password
+ *               deviceType:
+ *                 type: string
+ *                 description: The user's device type
+ *               appVersion:
+ *                 type: string
+ *                 description: The user's app version
  *     responses:
  *       200:
  *         description: Successful response
  */
-
 /**
  * @swagger
  * /api/v1/auth/signUp:
  *   put:
  *     tags:
  *       - Authentication
- *     summary: Resend otp for user , When user have register but OTP is expired.
+ *     summary: Resend Signup verification otp.
  *     requestBody:
  *       required: true
  *       content:
@@ -57,6 +85,10 @@ router.route("/signIn").post(AuthValidator.signIn, Authentication.all, AuthContr
  *             properties:
  *               mobileNumber:
  *                 type: string
+ *                 description: The user's mobile number
+ *               userId:
+ *                 type: string
+ *                 description: The user's Id
  *     responses:
  *       200:
  *         description: Successful response
@@ -69,10 +101,36 @@ router.route("/signUp").post(AuthValidator.signUp, Authentication.all, AuthContr
  *   post:
  *     tags:
  *       - Authentication
- *     summary:
+ *     summary: Verify signup otp.
+ *     parameters:
+ *       - in: header
+ *         name: VerifyToken
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token for verifying the request
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mobileNumber:
+ *                 type: string
+ *                 description: The user's mobile number
+ *               otp:
+ *                 type: string
+ *                 description: The user's otp
+ *               deviceType:
+ *                 type: string
+ *                 description: The user's device type
+ *               appVersion:
+ *                 type: string
+ *                 description: The user's app version
  *     responses:
  *       200:
- *         description:
+ *         description: Successful response
  */
 router.route("/verifyOtp").post(AuthValidator.verifyOTP, Authentication.all, AuthController.verifyOtp);
 
@@ -82,21 +140,45 @@ router.route("/verifyOtp").post(AuthValidator.verifyOTP, Authentication.all, Aut
  *   post:
  *     tags:
  *       - Authentication
- *     summary:
+ *     summary: For forgot password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mobileNumber:
+ *                 type: string
+ *                 description: The user's mobile number
  *     responses:
  *       200:
- *         description:
+ *         description: Successful response
  */
+
 /**
  * @swagger
  * /api/v1/auth/forgotPassword:
  *   put:
  *     tags:
  *       - Authentication
- *     summary: Reset Password
+ *     summary: Reset password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mobileNumber:
+ *                 type: string
+ *                 description: The user's mobile number
+ *               password:
+ *                 type: string
+ *                 description: The user's new password
  *     responses:
  *       200:
- *         description:
+ *         description: Successful response
  */
 router
 	.route("/forgotPassword")
@@ -109,10 +191,30 @@ router
  *   post:
  *     tags:
  *       - Authentication
- *     summary:
+ *     summary: Reset password.
+ *     parameters:
+ *       - in: header
+ *         name: VerifyFPToken
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Token for verifying the request
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mobileNumber:
+ *                 type: string
+ *                 description: The user's mobile number
+ *               otp:
+ *                 type: string
+ *                 description: The user's otp
  *     responses:
  *       200:
- *         description:
+ *         description: Successful response
  */
 router.route("/verify/forgotPasswordOTP").post(AuthValidator.verifyForgotPasswordOtp, Authentication.all, AuthController.verifyForgetPasswordOtp);
 

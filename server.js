@@ -13,8 +13,6 @@ const bodyParser = require("body-parser"); // TO PARSE POST REQUEST
 const cors = require("cors"); // ALLOW CROSS ORIGIN REQUESTS
 const { default: rateLimit } = require("express-rate-limit");
 
-const numCPUs = os.cpus().length;
-
 // ---------------------------    SERVER CONFIGS ----------------------------------
 // SSL CONFIG
 const port = process.env.PORT || 9000;
