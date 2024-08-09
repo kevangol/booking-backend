@@ -12,6 +12,10 @@ const categoriesWiseDocEntry = [
 		description: "",
 	},
 	{
+		name: "Profile",
+		description: "",
+	},
+	{
 		name: "Cars",
 		description: "",
 	},
@@ -82,8 +86,23 @@ const options = {
 			description: "Powered by six app",
 		},
 		tags: [...categoriesWiseDocEntry],
+		components: {
+			securitySchemes: {
+				BearerAuth: {
+					type: "http",
+					scheme: "bearer",
+					bearerFormat: "JWT",
+				},
+			},
+		},
+		security: [
+			{
+				BearerAuth: [], // Apply the BearerAuth scheme globally
+			},
+		],
 	},
-	apis: ["./Routes/*.js"], // Path to your API routes
+	apis: ["./Routes/*.js"],
+	// Path to your API routes
 };
 
 const specs = swaggerJsdoc(options);

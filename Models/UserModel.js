@@ -8,7 +8,7 @@ module.exports = class {
 	};
 
 	findUser = (filter, projection, option) => {
-		return UserSchema.findOne(filter, projection, option);
+		return UserSchema.findOne(filter, projection, option).lean();
 	};
 
 	updateUser = (filter, updatedData) => {

@@ -17,8 +17,12 @@ exports.signIn = [...authValidators];
 
 exports.signUp = [...authValidators];
 
+exports.resendSignUpOtp = [...mobileNumberBodyValidator, body("userId", "userId is required").trim().notEmpty()];
+
 exports.verifyOTP = [...mobileNumberBodyValidator, ...otpBodyValidator, body("deviceType", "deviceType is required").trim().notEmpty(), body("appVersion", "appVersion is required").trim().notEmpty()];
 
 exports.forgotPassword = [...mobileNumberBodyValidator];
 
-exports.resetPassword = [...mobileNumberBodyValidator, ...passwordBodyValidator, ...otpBodyValidator];
+exports.verifyForgotPasswordOtp = [...mobileNumberBodyValidator, ...otpBodyValidator];
+
+exports.resetPassword = [...mobileNumberBodyValidator, ...passwordBodyValidator];

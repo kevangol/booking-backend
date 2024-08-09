@@ -12,7 +12,7 @@ module.exports = (app) => {
 	 *     summary:
 	 *     responses:
 	 *       200:
-	 *         description: A successful response
+	 *         description:
 	 */
 	app.get("/api/v1/", (req, res) => {
 		res.status(STATUS_CODES.SUCCESS).send("Welcome to " + process.env.PROJECT_NAME);
