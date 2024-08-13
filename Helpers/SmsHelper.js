@@ -9,7 +9,7 @@ const sendOtpVerificationMessage = async (otp, to) => {
 		const sendSMS = await client.messages
 			.create({
 				body: OTP_TEXT,
-				from: "+13193023707",
+				from: "+19389465878",
 				to: to,
 			})
 			.then((response) => console.log("OTP send successfully"));
@@ -30,7 +30,7 @@ const forgetPasswordOtpMessage = async (otp, to) => {
 		const sendSMS = await client.messages
 			.create({
 				body: OTP_TEXT,
-				from: "+13193023707",
+				from: "+19389465878",
 				to: to,
 			})
 			.then((response) => console.log("FP OTP send successfully"));
