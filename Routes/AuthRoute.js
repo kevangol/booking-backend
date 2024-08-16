@@ -122,12 +122,6 @@ router.route("/signUp").post(AuthValidator.signUp, Authentication.all, AuthContr
  *               otp:
  *                 type: string
  *                 description: The user's otp
- *               deviceType:
- *                 type: string
- *                 description: The user's device type
- *               appVersion:
- *                 type: string
- *                 description: The user's app version
  *     responses:
  *       200:
  *         description: Successful response

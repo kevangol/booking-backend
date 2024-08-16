@@ -11,11 +11,13 @@ const UserSessionSchema = new mongoose.Schema(
 		deviceType: {
 			type: String,
 			trim: true,
+			default: DEVICE_TYPE.ANDROID,
 			enum: Object.values(DEVICE_TYPE),
 		},
 		appVersion: {
 			type: String,
 			trim: true,
+			default: 1.1
 		},
 		authToken: {
 			type: String,
