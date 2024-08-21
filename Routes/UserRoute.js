@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const UserController = new (require("../Controllers/UserController"))();
+const UserValidator = require("../middleware/validators/UserValidator");
 
 const Authentication = require("../middleware/authentication");
 
@@ -20,7 +21,34 @@ router.use(Authentication.userAccess);
  *       200:
  *         description:
  */
-router.route("/profile").get(UserController.getProfile);
+/**
+ * @swagger
+ * /api/v1/user/profile:
+ *   put:
+ *     tags:
+ *       - Profile
+ *     summary: User profile update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The user's email
+ *               fullName:
+ *                 type: string
+ *                 description: The user's full name
+ *               birthDate:
+ *                 type: string
+ *                 description: The user's birth date
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/profile").get(UserController.getProfile).put(UserValidator.updateProfileValidator, UserController.updateProfile);
 
 /**
  * @swagger

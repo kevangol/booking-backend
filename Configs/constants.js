@@ -93,6 +93,10 @@ exports.USER_TYPE = {
 exports.DEVICE_TYPE = {
 	ANDROID: "ANDROID",
 	IOS: "IOS",
+	WEB: "WEB",
+	WINDOWS: "WINDOWS",
+	MACOS: "MACOS",
+	LINUX: "LINUX",
 };
 
 exports.AUTHTYPES = {

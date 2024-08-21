@@ -1,58 +1,199 @@
 const mongoose = require("mongoose");
 
+// Enums
+const fuelTypes = ["Petrol", "Diesel", "Electric", "CNG", "LPG"];
+const transmissionTypes = ["Manual", "Automatic", "CVT", "DCT"];
+const insuranceTypes = ["Third-Party", "Comprehensive"];
+const steeringAdjustmentTypes = ["Tilt", "Telescopic", "Tilt and Telescopic"];
+const suspensionTypes = ["MacPherson Strut", "Double Wishbone", "Multi-Link"];
+const brakeTypes = ["Disc", "Drum"];
+const steeringTypes = ["Rack and Pinion", "Recirculating Ball"];
+
 const CarSchema = new mongoose.Schema(
 	{
-		title: {},
-		makeId: {},
-		modelId: {},
-		images: {},
-		realModel: {},
-		homeTestDrive: {},
-		price: {},
-		priceUnit: {},
-		transferTax: {},
-		makeYear: {},
-		registerYear: {},
-		fuel: {},
-		kmDriven: {},
-		transmission: {},
-		numberOfOwner: {},
-		insuranceValidity: {},
-		insuranceType: {},
-		rto: {},
-		location: {},
-		mileage: {},
-		groundClearance: {},
-		seatingCapacity: {},
-		bootSpace: {},
-		numberOfSeatingRows: {},
-		fuelTankCapacity: {},
-		alloyWheels: {},
-		frontTyreSize: {},
-		spareWheel: {},
-		numberOfDoors: {},
-		drivetrain: {},
-		gearBox: {},
-		numberOfGears: {},
-		displacement: {},
-		numberOfCylinders: {},
-		valve: {},
-		limitedSlipDifferential: {},
-		mildHybrid: {},
-		turboCharger: {},
-		clutchType: {},
-		topSpeed: {},
-		maxPower: {},
-		maxTorque: {},
-		sportMode: {},
-		multiDriverMode: {},
-		suspensionFrontType: {},
-		suspensionRearType: {},
-		steeringAdjustmentType: {},
-		frontBreakType: {},
-		rearBreakType: {},
-		steeringType: {},
-		minimumTurningRadius: {},
+		title: {
+			type: String,
+			required: true,
+			minlength: 3,
+		},
+		makeId: { type: mongoose.Schema.Types.ObjectId, ref: "makes" },
+		modelId: { type: mongoose.Schema.Types.ObjectId, ref: "models" },
+		images: [String],
+		realModel: { type: String },
+		homeTestDrive: { type: Boolean },
+		price: {
+			type: Number,
+			required: true,
+			min: 0,
+		},
+		priceUnit: String,
+		transferTax: {
+			type: Number,
+			min: 0,
+		},
+		makeYear: {
+			type: Number,
+			required: true,
+			min: 1900,
+			max: new Date().getFullYear(),
+		},
+		registerYear: {
+			type: Number,
+			required: true,
+			min: 1900,
+			max: new Date().getFullYear(),
+		},
+		fuel: {
+			type: String,
+			enum: fuelTypes,
+			required: true,
+		},
+		kmDriven: {
+			type: Number,
+			default: 0,
+			min: 0,
+		},
+		transmission: {
+			type: String,
+			enum: transmissionTypes,
+			required: true,
+		},
+		numberOfOwner: {
+			type: Number,
+			default: 1,
+			min: 1,
+		},
+		insuranceValidity: { type: Date },
+		insuranceType: {
+			type: String,
+			enum: insuranceTypes,
+			required: true,
+		},
+		rto: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "rto",
+		},
+		location: {
+			type: String,
+			required: true,
+		},
+		mileage: {
+			type: Number,
+			min: 0,
+		},
+		groundClearance: {
+			type: Number,
+			min: 0,
+		},
+		seatingCapacity: {
+			type: Number,
+			min: 1,
+		},
+		bootSpace: {
+			type: Number,
+			min: 0,
+		},
+		numberOfSeatingRows: {
+			type: Number,
+			default: 5,
+			min: 1,
+			max: 5,
+		},
+		fuelTankCapacity: {
+			type: Number,
+			min: 0,
+		},
+		alloyWheels: {
+			type: Boolean,
+			default: false,
+		},
+		frontTyreSize: String,
+		spareWheel: {
+			type: Boolean,
+			default: true,
+		},
+		numberOfDoors: {
+			type: Number,
+			default: 4,
+			min: 2,
+			max: 6,
+		},
+		drivetrain: String,
+		gearBox: String,
+		numberOfGears: {
+			type: Number,
+			min: 1,
+		},
+		displacement: {
+			type: Number,
+			min: 0,
+		},
+		numberOfCylinders: {
+			type: Number,
+			min: 1,
+		},
+		valve: String,
+		limitedSlipDifferential: {
+			type: Boolean,
+			default: false,
+		},
+		mildHybrid: {
+			type: Boolean,
+			default: false,
+		},
+		turboCharger: {
+			type: Boolean,
+			default: false,
+		},
+		clutchType: String,
+		topSpeed: {
+			type: Number,
+			min: 0,
+		},
+		maxPower: {
+			type: Number,
+			min: 0,
+		},
+		maxTorque: {
+			type: Number,
+			min: 0,
+		},
+		sportMode: {
+			type: Boolean,
+			default: false,
+		},
+		multiDriverMode: {
+			type: Boolean,
+			default: false,
+		},
+		suspensionFrontType: {
+			type: String,
+			enum: suspensionTypes,
+		},
+		suspensionRearType: {
+			type: String,
+			enum: suspensionTypes,
+		},
+		steeringAdjustmentType: {
+			type: String,
+			enum: steeringAdjustmentTypes,
+		},
+		frontBreakType: {
+			type: String,
+			enum: brakeTypes,
+		},
+		rearBreakType: {
+			type: String,
+			enum: brakeTypes,
+		},
+		steeringType: {
+			type: String,
+			enum: steeringTypes,
+		},
+		minimumTurningRadius: {
+			type: Number,
+			min: 0,
+		},
 	},
 	{
 		timestamps: {
