@@ -21,4 +21,8 @@ module.exports = (app) => {
 	app.use("/api/v1/auth", require("./AuthRoute"));
 
 	app.use("/api/v1/user", require("./UserRoute"));
+
+	app.use("/api/v1/cms/category", require("./CmsCategoryRoute"));
+
+	// app.use("/api/v1/category", require("./CategoryRoute"));
 };
