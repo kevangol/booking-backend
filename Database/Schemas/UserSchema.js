@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema(
 		},
 		email: {
 			type: String,
-			default: "",
+			unique: true,
 		},
 		isVerifiedEmail: {
 			type: Boolean,
@@ -43,12 +43,13 @@ const UserSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
-		birthdate: {
+		birthDate: {
 			type: Date,
 		},
 		profileImage: {
 			type: String,
 			trim: true,
+			default: "https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg",
 		},
 		otp: {
 			type: Number,
