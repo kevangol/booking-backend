@@ -91,12 +91,14 @@
 		}
 	},
 	"PROCESS": {
+		"DELETE": "Data deleted Successfully",
 		"MSG_SENT": "We have sent message to your mobile number",
 		"MSG_SENT_ACCOUNT": "We have sent message to %s",
 		"SENT": {
 			"MSG_SENT": "PROCESS.SENT.MSG_SENT"
 		}
 	},
+	"CAR": {},
 	"Verify Token is Expired.": "Verify Token is Expired.",
 	"Verify FP token not found.": "Verify FP token not found.",
 	"Verify FP Token is Expired.": "Verify FP Token is Expired.",

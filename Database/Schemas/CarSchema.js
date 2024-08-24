@@ -11,6 +11,10 @@ const steeringTypes = ["Rack and Pinion", "Recirculating Ball"];
 
 const CarSchema = new mongoose.Schema(
 	{
+		userId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "users",
+		},
 		title: {
 			type: String,
 			required: true,

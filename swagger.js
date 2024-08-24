@@ -16,7 +16,19 @@ const categoriesWiseDocEntry = [
 		description: "",
 	},
 	{
+		name: "Categories",
+		description: "",
+	},
+	{
+		name: "Vehicle Regularity",
+		description: "",
+	},
+	{
 		name: "Cars",
+		description: "",
+	},
+	{
+		name: "Bikes",
 		description: "",
 	},
 	{
@@ -24,11 +36,11 @@ const categoriesWiseDocEntry = [
 		description: "",
 	},
 	{
-		name: "Furniture & Home Decor",
+		name: "Movies & Events",
 		description: "",
 	},
 	{
-		name: "Movies & Events",
+		name: "Furniture & Home Decor",
 		description: "",
 	},
 	{
@@ -39,10 +51,7 @@ const categoriesWiseDocEntry = [
 		name: "Policy",
 		description: "",
 	},
-	{
-		name: "Bikes",
-		description: "",
-	},
+
 	{
 		name: "Electronics",
 		description: "",

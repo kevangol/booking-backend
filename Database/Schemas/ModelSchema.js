@@ -5,6 +5,9 @@ const ModelSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	image: {
+		type: String,
+	},
 	make: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "makes",
