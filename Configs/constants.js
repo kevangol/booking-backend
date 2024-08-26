@@ -99,6 +99,11 @@ exports.DEVICE_TYPE = {
 	LINUX: "LINUX",
 };
 
+exports.VEHICLE_TYPE = {
+	BIKE: "BIKE",
+	CAR: "CAR",
+};
+
 exports.AUTHTYPES = {
 	GOOGLE: "google",
 	FACEBOOK: "facebook",

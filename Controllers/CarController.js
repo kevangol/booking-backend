@@ -5,8 +5,7 @@ const CarModelModel = new (require("../Models/ModelsModel"))();
 module.exports = class {
 	addCar = async (req, res) => {
 		try {
-			const car = await CarModel.createCar(req.body);
-
+			const car = await CarModel.createCar({ userId: req.user, ...req.body });
 			return res.handler.success(car);
 		} catch (err) {
 			return res.handler.serverError(err);
@@ -44,7 +43,7 @@ module.exports = class {
 
 	addAllCarMake = async (req, res) => {
 		try {
-			const carAllMake = await CarMakeModel.createCarAll(req.body.data);
+			const carAllMake = await CarMakeModel.createMakesAll(req.body.data);
 
 			return res.handler.success(carAllMake);
 		} catch (err) {
@@ -54,7 +53,7 @@ module.exports = class {
 
 	getAllCarMake = async (req, res) => {
 		try {
-			const getCarAllMake = await CarMakeModel.getAllMakes({}, req.query.skip, req.query.limit);
+			const getCarAllMake = await CarMakeModel.getAllMakes({ type: req.query.type }, req.query.skip, req.query.limit);
 			return res.handler.success(getCarAllMake);
 		} catch (err) {
 			return res.handler.serverError(err);
@@ -85,6 +84,16 @@ module.exports = class {
 		try {
 			const car = await CarModelModel.getAllModel({}, req.query.skip, req.query.limit);
 			return res.handler.success(car);
+		} catch (err) {
+			return res.handler.serverError(err);
+		}
+	};
+
+	getCountOfSellProduct = async (req, res) => {
+		try {
+			const count = await CarModel.countUserCar({ userId: req.user });
+			console.log(count);
+			return count;
 		} catch (err) {
 			return res.handler.serverError(err);
 		}

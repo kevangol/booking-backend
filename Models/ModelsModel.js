@@ -22,6 +22,6 @@ module.exports = class {
 	};
 
 	getAllModel = (filter = {}, skip = 0, limit = 10) => {
-		return ModelSchema.find(filter).skip(skip).limit(limit).lean();
+		return ModelSchema.find(filter).skip(skip).limit(limit).populate("makeId").lean();
 	};
 };

@@ -24,9 +24,9 @@ module.exports = (app) => {
 
 	app.use("/api/v1/cms/category", require("./CmsCategoryRoute"));
 
-	app.use("/api/v1/cms/car", require("./CmsCarRoute"));
+	app.use("/api/v1/car", require("./CarRoute"));
 
-	app.use("/api/v1/cms/bike", require("./CmsBikeRoute"));
+	app.use("/api/v1/bike", require("./CmsBikeRoute"));
 
 	app.use("/api/v1/cms/vehicle-regularity", require("./CmsVehicleRegularity"));
 

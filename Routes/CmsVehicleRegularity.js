@@ -3,6 +3,7 @@ const router = express.Router();
 const CarValidator = require("../middleware/validators/CarValidator");
 const CmsCarController = new (require("../Controllers/CarController"))();
 const RtoController = new (require("../Controllers/RtoController"))();
+const VehicleTypeController = new (require("../Controllers/VehicleTypeController"))();
 
 // ----------------------------------------------------------------------------------------------
 /**
@@ -50,6 +51,11 @@ router.route("/make/add/All").post(CmsCarController.addAllCarMake);
  *         schema:
  *           type: integer
  *           example: 10
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *           example: BIKE
  *         description: The maximum number of items to return
  *     responses:
  *       200:
@@ -168,34 +174,6 @@ router.route("/rto/add").post(CarValidator.addCar, RtoController.addRto);
  *     responses:
  *       200:
  *         description: Successfully added RTO details
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: RTO details added successfully
- *       400:
- *         description: Bad request due to invalid input
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Invalid input data
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Internal server error
  */
 router.route("/rto/add/All").post(RtoController.addAllRto);
 
@@ -276,5 +254,136 @@ router.route("/rto").get(RtoController.getAllRto);
  *                   example: Internal server error
  */
 router.route("/rto/delete").delete(RtoController.deleteRto);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/vehicle-type/add:
+ *   post:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/vehicle-type/add").post(CarValidator.addCar, VehicleTypeController.addAllVehicleType);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/vehicle-type/add/All:
+ *   post:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               data:
+ *                 type: array
+ *                 description: Array of RTO details to be added
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - name
+ *                     - type
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                       description: Name of the car/bike type
+ *                     type:
+ *                       type: string
+ *                       description: type BIKE/CAR
+ *     responses:
+ *       200:
+ *         description: Successfully added RTO details
+ */
+router.route("/vehicle-type/add/All").post(VehicleTypeController.addAllVehicleType);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/vehicle-type:
+ *   get:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *         description: The number of items to skip for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description: The maximum number of items to return
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *           example: BIKE
+ *         description: BIKE/CAR
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/vehicle-type").get(VehicleTypeController.getAllVehicleType);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/vehicle-type/delete:
+ *   delete:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary: delete vehicle type
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: delete rto by id
+ *     responses:
+ *       200:
+ *         description: Successfully added RTO details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: RTO details added successfully
+ *       400:
+ *         description: Bad request due to invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid input data
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+router.route("/vehicle-type/delete").delete(VehicleTypeController.deleteVehicleType);
 
 module.exports = router;

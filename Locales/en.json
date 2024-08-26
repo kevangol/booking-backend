@@ -78,7 +78,8 @@
 		"NOT_FOUND": {
 			"USER": "We can't find request User !",
 			"MOBILE_NUMBER": "We can't find this Mobile Number !",
-			"ACCOUNT": "We can't find this account"
+			"ACCOUNT": "We can't find this account",
+			"DATA": "VALIDATION.NOT_FOUND.DATA"
 		},
 		"PASSWORD": {
 			"MISMATCH": "Provided password values do not match",
@@ -104,5 +105,7 @@
 	"Verify FP Token is Expired.": "Verify FP Token is Expired.",
 	"USER": {
 		"RESET_PASSWORD": "Password Reset Successfully."
-	}
+	},
+	"Your sell products limit is over now, Please go with become seller": "Your sell products limit is over now, Please go with become seller",
+	"Your sell products limit is over now, Please go with become seller.": "Your sell products limit is over now, Please go with become seller."
 }

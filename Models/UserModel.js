@@ -11,6 +11,10 @@ module.exports = class {
 		return UserSchema.findOne(filter, projection, option).lean();
 	};
 
+	checkIsSeller = (user) => {
+		return UserSchema.findOne({ _id: user, isSeller: true });
+	};
+
 	updateUser = (filter, updatedData) => {
 		return UserSchema.updateOne(filter, updatedData);
 	};
