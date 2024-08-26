@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { VEHICLE_TYPE } = require("../../Configs/constants");
 
-const MakeSchema = new mongoose.Schema({
+const VehicleTypeSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
@@ -17,4 +17,4 @@ const MakeSchema = new mongoose.Schema({
 	},
 });
 
-module.exports = mongoose.model("makes", MakeSchema);
+module.exports = mongoose.model("vehicleType", VehicleTypeSchema);

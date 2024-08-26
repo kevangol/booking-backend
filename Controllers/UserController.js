@@ -38,6 +38,14 @@ module.exports = class {
 		}
 	};
 
+	getIamSeller = async (req, res) => {
+		try {
+			return UserModel.checkIsSeller(req.user);
+		} catch (err) {
+			return res.handler.serverError(err);
+		}
+	};
+
 	// updateProfileImage = async (req, res) => {
 	// 	try {
 	// 	} catch (err) {

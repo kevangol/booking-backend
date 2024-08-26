@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		isSeller: {
+			type: Boolean,
+			default: false,
+		},
 		countryCode: {
 			type: String,
 			default: "91",
