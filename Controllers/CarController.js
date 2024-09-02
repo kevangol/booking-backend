@@ -22,9 +22,27 @@ module.exports = class {
 		}
 	};
 
+	deleteCar = async (req, res) => {
+		try {
+			const car = await CarModel.deleteCar({ _id: req.body.carId });
+			return res.handler.success("Car delete successfully", car);
+		} catch (err) {
+			return res.handler.serverError(err);
+		}
+	};
+
 	getAllCar = async (req, res) => {
 		try {
 			const car = await CarModel.getAllCar({}, req.query.skip, req.query.limit);
+			return res.handler.success(car);
+		} catch (err) {
+			return res.handler.serverError(err);
+		}
+	};
+
+	getMyAllCar = async (req, res) => {
+		try {
+			const car = await CarModel.getAllCar({ userId: req.user }, req.query.skip, req.query.limit);
 			return res.handler.success(car);
 		} catch (err) {
 			return res.handler.serverError(err);

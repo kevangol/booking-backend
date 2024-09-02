@@ -273,8 +273,61 @@ router.use(Authentication.userAccess);
  *         description:
  */
 
+/**-------3
+ * @swagger
+ * /api/v1/car/my-cars:
+ *   get:
+ *     tags:
+ *       - Cars
+ *     summary:
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *         description: The number of items to skip for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description: The maximum number of items to return
+ *     responses:
+ *       200:
+ *         description:
+ */
+
+/**------4
+/**
+ * @swagger
+ * /api/v1/car/delete:
+ *   delete:
+ *     summary: Delete a car
+ *     description:
+ *     tags:
+ *       - Cars
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               carId:
+ *                 type: string
+ *                 description: give here car id
+ *     responses:
+ *       '200':
+ *         description: 
+ */
+
 router.route("/add").post(CarValidator.addCar, CmsCarController.addCar);
 
 router.route("/").get(CmsCarController.getAllCar);
+
+router.route("/my-cars").get(CmsCarController.getMyAllCar);
+
+router.route("/delete").delete(CmsCarController.deleteCar);
 
 module.exports = router;
