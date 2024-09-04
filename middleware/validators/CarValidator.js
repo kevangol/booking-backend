@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 
 const defaultValidation = [
 	body("title").isString().isLength({ min: 3 }).withMessage("Title is required and must be at least 3 characters long"),
-
+	body("color").isString().isLength({ max: 50 }).withMessage("Color must be a string with a maximum length of 50 characters."),
 	// MakeId
 	body("makeId").isMongoId().withMessage("MakeId must be a valid MongoDB ObjectId"),
 

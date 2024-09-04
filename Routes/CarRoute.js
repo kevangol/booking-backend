@@ -155,6 +155,10 @@ router.use(Authentication.userAccess);
  *               valve:
  *                 type: string
  *                 description: The type of valves used
+ *               color:
+ *                 type: string
+ *                 maxLength: 50
+ *                 description: The color of the bike.
  *               limitedSlipDifferential:
  *                 type: boolean
  *                 description: Whether the car has a limited-slip differential

@@ -6,6 +6,11 @@ const BikeSchema = new mongoose.Schema({
 		ref: "users",
 		required: true,
 	},
+	title: {
+		type: String,
+		required: true,
+		minlength: 3,
+	},
 	makeId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "makes",

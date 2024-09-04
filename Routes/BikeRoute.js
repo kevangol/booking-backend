@@ -1,19 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const CarValidator = require("../middleware/validators/CarValidator");
-const CmsCarController = new (require("../Controllers/CarController"))();
+const BikeValidator = require("../middleware/validators/BikeValidator");
+const BikeController = new (require("../Controllers/BikeController"))();
+const Authentication = require("../middleware/authentication");
 
-router.route("/add").post(CarValidator.addCar, CmsCarController.addCar);
-
-router.route("/add/All").post(CmsCarController.addAllCar);
-
-router.route("/").get(CmsCarController.getAllCar);
-
+router.use(Authentication.userAccess);
 /**
  * @swagger
  * /api/v1/bike/add:
  *   post:
- *     summary: Create a new car
+ *     summary: Create a new bike
  *     description: Create a new car with the provided details.
  *     tags:
  *       - Bikes
@@ -24,6 +20,10 @@ router.route("/").get(CmsCarController.getAllCar);
  *           schema:
  *             type: object
  *             properties:
+ *               title:
+ *                 type: string
+ *                 maxLength: 30
+ *                 description: The title of the bike.
  *               makeId:
  *                 type: string
  *                 format: uuid
@@ -231,12 +231,12 @@ router.route("/").get(CmsCarController.getAllCar);
  *         description: 
  */
 
-router.route("/").get();
+router.route("/").get(BikeController.getAllBike);
 
-router.route("/my-bikes").get();
+router.route("/my-bikes").get(BikeController.getMyAllBike);
 
-router.route("/delete").delete();
+router.route("/delete").delete(BikeController.deleteBike);
 
-router.route("/add").post();
+router.route("/add").post(BikeValidator.addBike, BikeController.addBike);
 
 module.exports = router;

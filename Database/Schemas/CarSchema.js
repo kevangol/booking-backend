@@ -14,6 +14,7 @@ const CarSchema = new mongoose.Schema(
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "users",
+			required: true,
 		},
 		title: {
 			type: String,
@@ -77,6 +78,11 @@ const CarSchema = new mongoose.Schema(
 		rto: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "rto",
+		},
+		color: {
+			type: String,
+			trim: true,
+			maxlength: [50, "Color name cannot exceed 50 characters"],
 		},
 		location: {
 			type: String,
