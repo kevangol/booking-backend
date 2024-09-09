@@ -21,9 +21,10 @@ const CarSchema = new mongoose.Schema(
 			required: true,
 			minlength: 3,
 		},
-		makeId: { type: mongoose.Schema.Types.ObjectId, ref: "makes" },
-		modelId: { type: mongoose.Schema.Types.ObjectId, ref: "models" },
-		vehicleTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "vehicleType" },
+		categoriesId: { type: mongoose.Schema.Types.ObjectId, ref: "categories", required: true },
+		makeId: { type: mongoose.Schema.Types.ObjectId, ref: "makes", required: true },
+		modelId: { type: mongoose.Schema.Types.ObjectId, ref: "models", required: true },
+		vehicleTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "vehicleType", required: true },
 		images: { type: [String], default: ["https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg", "https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg"] },
 		realModel: { type: String },
 		homeTestDrive: { type: Boolean },
@@ -212,6 +213,10 @@ const CarSchema = new mongoose.Schema(
 		minimumTurningRadius: {
 			type: Number,
 			min: 0,
+		},
+		isLoan: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	{

@@ -1,3 +1,4 @@
+const S3Manager = require("../Helpers/AwsHelper");
 const { swaggerUi, specs } = require("../swagger");
 
 module.exports = (app) => {
@@ -16,6 +17,60 @@ module.exports = (app) => {
 	 */
 	app.get("/api/v1/", (req, res) => {
 		res.status(STATUS_CODES.SUCCESS).send("Welcome to " + process.env.PROJECT_NAME);
+	});
+
+	/**
+	 * @swagger
+	 * /api/v1/test-image:
+	 *   post:
+	 *     tags:
+	 *       - Check Server
+	 *     requestBody:
+	 *       required: true
+	 *       content:
+	 *         application/json:
+	 *           schema:
+	 *             type: object
+	 *             properties:
+	 *               image:
+	 *                 type: string
+	 *                 maxLength: 30
+	 *                 description:
+	 *               imageName:
+	 *                 type: string
+	 *                 maxLength: 30
+	 *                 description:
+	 *     summary:
+	 *     responses:
+	 *       200:
+	 *         description:
+	 */
+	app.post("/api/v1/test-image", async (req, res) => {
+		console.log(req.body.image);
+		const result = await S3Manager.S3UploadBase64(req.body.image, "test", req.body.imageName);
+		res.status(STATUS_CODES.SUCCESS).send(result);
+	});
+
+	/**
+	 * @swagger
+	 * /api/v1/test-get-image:
+	 *   get:
+	 *     tags:
+	 *       - Check Server
+	 *     parameters:
+	 *       - in: query
+	 *         name: path
+	 *         schema:
+	 *           type: string
+	 *         description: give path name
+	 *     summary:
+	 *     responses:
+	 *       200:
+	 *         description:
+	 */
+	app.get("/api/v1/test-get-image", async (req, res) => {
+		const result = await S3Manager.S3GetImage(req.query.path);
+		res.status(STATUS_CODES.SUCCESS).send(result);
 	});
 
 	app.use("/api/v1/auth", require("./AuthRoute"));

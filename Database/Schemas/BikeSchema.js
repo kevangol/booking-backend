@@ -11,6 +11,7 @@ const BikeSchema = new mongoose.Schema({
 		required: true,
 		minlength: 3,
 	},
+	categoriesId: { type: mongoose.Schema.Types.ObjectId, ref: "categories", required: true },
 	makeId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "makes",

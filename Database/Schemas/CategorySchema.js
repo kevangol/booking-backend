@@ -23,6 +23,11 @@ const CategorySchema = new mongoose.Schema(
 			type: Boolean,
 			default: true,
 		},
+		slug: { type: String, required: true, unique: true }, // SEO-friendly URL slug
+		metaDescription: { type: String, maxlength: 160 }, // Meta description for SEO
+		keywords: [String], // Array of SEO keywords
+		canonicalUrl: { type: String, default: "https://www.six.ind.in/" }, // Canonical URL to avoid duplicate content
+		content: { type: String, required: true }, // Main content for the page
 	},
 	{
 		timestamps: {

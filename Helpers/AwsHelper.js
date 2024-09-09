@@ -11,8 +11,6 @@ const credentials = {
 //S3 CONFIG
 const s3 = new AWS.S3(credentials);
 
-console.log("====>", credentials);
-
 module.exports = class S3Manager {
 	static async S3GetImage(path) {
 		return new Promise((resolve, reject) => {
