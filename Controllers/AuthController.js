@@ -136,8 +136,6 @@ module.exports = class {
 			const user = await UserModel.findUserByPhoneNumber(req.body.mobileNumber, ["mobileNumber", "countryCode"]);
 			if (!user) return res.handler.notFound("VALIDATION.NOT_FOUND.USER");
 
-			console.log("===>", user);
-
 			const otp = randomStringHelper.generateOtp();
 
 			await UserModel.updateUser(

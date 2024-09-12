@@ -4,6 +4,8 @@ const CarValidator = require("../middleware/validators/CarValidator");
 const CmsCarController = new (require("../Controllers/CarController"))();
 const RtoController = new (require("../Controllers/RtoController"))();
 const VehicleTypeController = new (require("../Controllers/VehicleTypeController"))();
+const CityController = new (require("../Controllers/CityController"))();
+const ColorController = new (require("../Controllers/ColorController"))();
 
 // ----------------------------------------------------------------------------------------------
 /**
@@ -385,5 +387,212 @@ router.route("/vehicle-type").get(VehicleTypeController.getAllVehicleType);
  *                   example: Internal server error
  */
 router.route("/vehicle-type/delete").delete(VehicleTypeController.deleteVehicleType);
+
+// ----------------------------------------------------------------------------------------------
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/city/add:
+ *   post:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/city/add").post(CarValidator.addCar, CityController.addCity);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/city/add/All:
+ *   post:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/city/add/All").post(CityController.addAllCity);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/city:
+ *   get:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *         description: The number of items to skip for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description: The maximum number of items to return
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/city").get(CityController.getAllCity);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/city/delete:
+ *   delete:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary: delete vehicle type
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cityId:
+ *                 type: string
+ *                 description: delete rto by cityId
+ *     responses:
+ *       200:
+ *         description: Successfully added RTO details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: RTO details added successfully
+ *       400:
+ *         description: Bad request due to invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid input data
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+router.route("/city/delete").delete(CityController.deleteCity);
+// ----------------------------------------------------------------------------------------------
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/color/add:
+ *   post:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/color/add").post(ColorController.addColor);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/color/add/All:
+ *   post:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/color/add/All").post(ColorController.addAllColor);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/color:
+ *   get:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary:
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *         description: The number of items to skip for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description: The maximum number of items to return
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.route("/color").get(ColorController.getAllColor);
+
+/**
+ * @swagger
+ * /api/v1/cms/vehicle-regularity/color/delete:
+ *   delete:
+ *     tags:
+ *       - Vehicle Regularity
+ *     summary: delete Color
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               colorId:
+ *                 type: string
+ *                 description: delete color
+ *     responses:
+ *       200:
+ *         description: Successfully added color details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: color details added successfully
+ *       400:
+ *         description: Bad request due to invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid input data
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal server error
+ */
+router.route("/color/delete").delete(ColorController.deleteColor);
 
 module.exports = router;

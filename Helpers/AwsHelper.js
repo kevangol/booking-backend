@@ -68,7 +68,6 @@ module.exports = class S3Manager {
 					}
 				});
 			} catch (e) {
-				console.log("functions3Upload -> e", e);
 				reject({ message: "Could not upload image", err: e });
 			}
 		});

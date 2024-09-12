@@ -46,7 +46,6 @@ module.exports = (app) => {
 	 *         description:
 	 */
 	app.post("/api/v1/test-image", async (req, res) => {
-		console.log(req.body.image);
 		const result = await S3Manager.S3UploadBase64(req.body.image, "test", req.body.imageName);
 		res.status(STATUS_CODES.SUCCESS).send(result);
 	});
@@ -63,14 +62,46 @@ module.exports = (app) => {
 	 *         schema:
 	 *           type: string
 	 *         description: give path name
+	 *       - in: query
+	 *         name: filename
+	 *         schema:
+	 *           type: string
+	 *         description: give filename
 	 *     summary:
 	 *     responses:
 	 *       200:
 	 *         description:
 	 */
 	app.get("/api/v1/test-get-image", async (req, res) => {
-		const result = await S3Manager.S3GetImage(req.query.path);
+		const result = await S3Manager.S3GetImage(`${process.env.AWS_PROJECT_NAME}/${req.query.path}/${req.query.filename}`);
 		res.status(STATUS_CODES.SUCCESS).send(result);
+	});
+
+	/**
+	 * @swagger
+	 * /api/v1/delete-image:
+	 *   get:
+	 *     tags:
+	 *       - Check Server
+	 *     parameters:
+	 *       - in: query
+	 *         name: path
+	 *         schema:
+	 *           type: string
+	 *         description: give path name
+	 *       - in: query
+	 *         name: filename
+	 *         schema:
+	 *           type: string
+	 *         description: give filename
+	 *     summary:
+	 *     responses:
+	 *       200:
+	 *         description:
+	 */
+	app.get("/api/v1/delete-image", async (req, res) => {
+		const result = await S3Manager.S3Delete(`${process.env.AWS_PROJECT_NAME}/${req.query.path}/${req.query.filename}`);
+		res.status(STATUS_CODES.SUCCESS).send("Deleted");
 	});
 
 	app.use("/api/v1/auth", require("./AuthRoute"));

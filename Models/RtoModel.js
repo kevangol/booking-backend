@@ -6,7 +6,6 @@ module.exports = class {
 	};
 
 	createRtoAll = (body) => {
-		console.log(body);
 		return RtoSchema.insertMany(body);
 	};
 

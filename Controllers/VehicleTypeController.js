@@ -16,7 +16,6 @@ module.exports = class {
 			const vehicleType = await VehicleTypeModel.createVehicleTypeAll(req.body.data);
 			return res.handler.success(vehicleType);
 		} catch (err) {
-			console.log(err);
 			return res.handler.serverError(err);
 		}
 	};

@@ -16,7 +16,6 @@ const sendOtpVerificationMessage = async (otp, to) => {
 
 		return sendSMS;
 	} catch (error) {
-		console.log(error);
 		return error;
 	}
 };
@@ -37,7 +36,6 @@ const forgetPasswordOtpMessage = async (otp, to) => {
 
 		return sendSMS;
 	} catch (error) {
-		console.log(error);
 		return error;
 	}
 };

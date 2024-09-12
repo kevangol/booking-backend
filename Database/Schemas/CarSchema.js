@@ -24,6 +24,7 @@ const CarSchema = new mongoose.Schema(
 		categoriesId: { type: mongoose.Schema.Types.ObjectId, ref: "categories", required: true },
 		makeId: { type: mongoose.Schema.Types.ObjectId, ref: "makes", required: true },
 		modelId: { type: mongoose.Schema.Types.ObjectId, ref: "models", required: true },
+		colorId: { type: mongoose.Schema.Types.ObjectId, ref: "colors", required: true },
 		vehicleTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "vehicleType", required: true },
 		images: { type: [String], default: ["https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg", "https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg"] },
 		realModel: { type: String },
@@ -80,11 +81,6 @@ const CarSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "rto",
 		},
-		color: {
-			type: String,
-			trim: true,
-			maxlength: [50, "Color name cannot exceed 50 characters"],
-		},
 		location: {
 			type: String,
 			default: "123, Park Street, Park Circus, Kolkata, West Bengal 700017, India",
@@ -96,6 +92,11 @@ const CarSchema = new mongoose.Schema(
 		longitude: {
 			type: String,
 			default: "88.3493",
+		},
+		city: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "cities",
+			required: true,
 		},
 		mileage: {
 			type: Number,
