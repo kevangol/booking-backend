@@ -25,5 +25,9 @@ module.exports = class {
 		return CategorySchema.find(filter).skip(skip).limit(limit).lean();
 	};
 
+	totalCount = (filter) => {
+		return CategorySchema.find(filter).countDocuments();
+	};
+
 	getAllWithSubCategory = () => {};
 };

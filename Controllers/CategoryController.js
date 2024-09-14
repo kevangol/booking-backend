@@ -23,8 +23,10 @@ module.exports = class {
 
 	getAllCategory = async (req, res) => {
 		try {
+			const totalCategory = await CategoryModel.totalCount();
+			const totalpage = totalCategory / parseInt(req.query.limit);
 			const category = await CategoryModel.getAll({}, req.query.skip, req.query.limit);
-			return res.handler.success(category);
+			return res.handler.success({ total: totalCategory, page: totalpage, category });
 		} catch (err) {
 			return res.handler.serverError(err);
 		}

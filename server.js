@@ -1,12 +1,13 @@
 // PARSE .ENV
 require("dotenv").config();
+require("./Ai/RemoveSexualContent.model");
 const actuator = require("express-actuator");
 // FOR SERVER
 // CHECK WITH PROTOCOL TO USE
 const http = require("http");
 const cluster = require("cluster");
-const path = require("path");
 const os = require("os");
+const fs = require("fs");
 
 const express = require("express"); // NODE FRAMEWORK
 const bodyParser = require("body-parser"); // TO PARSE POST REQUEST
@@ -18,6 +19,49 @@ const { default: rateLimit } = require("express-rate-limit");
 const port = process.env.PORT || 9000;
 const app = express();
 const server = http.createServer(app);
+
+// ------------------------    OVERWRITE LOG FUNCTION TO WRITE CONSOLE.LOG IN LOG FILE    -------------------
+let path = require("path");
+let moment = require("moment");
+let logDirectory = path.join(__dirname, "./Logs");
+let rfs = require("rotating-file-stream");
+let accessLogStream;
+
+try {
+	fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+	// accessLogStream = rfs(moment(new Date()).format('YYYY MMMM Do') + '.log', {
+	accessLogStream = rfs.createStream(moment(new Date()).format("DD-MM-YYYY") + ".log", {
+		interval: "1d", // rotate daily
+		path: logDirectory,
+	});
+} catch (err) {
+	// Handle the error here.
+	console.log(err);
+}
+
+let util = require("util");
+let log_stdout = process.stdout;
+console.log("__dirname", __dirname);
+console.log("logDirectory", logDirectory);
+console.log = function () {
+	const currentDate = moment(new Date());
+	let filePath = __dirname + "/Logs/" + currentDate.format("DD-MM-YYYY") + ".log";
+
+	if (fs.existsSync(logDirectory)) {
+		if (!fs.existsSync(filePath)) {
+			rfs.createStream(filePath);
+		}
+	} else {
+		fs.mkdirSync(logDirectory);
+	}
+
+	setTimeout(() => {
+		let log_file = fs.createWriteStream(filePath, { flags: "a" });
+
+		log_file.write(`CONSOLE.LOG (${currentDate.format("hh:mm:ss")}): ` + util.format.apply(null, arguments) + "\n");
+		log_stdout.write(util.format.apply(null, arguments) + "\n");
+	}, 100);
+};
 
 // GLOBAL SETTINGS FILES
 require("./Configs/globals");
@@ -50,8 +94,8 @@ language.configure({
 
 // ------------------------      GLOBAL MIDDLEWARE -------------------------
 app.use(limiter);
-
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "Logs")));
 
 app.use(actuator({ infoGitMode: "full" }));
 
@@ -75,6 +119,13 @@ app.use("/images", express.static(path.join(__dirname, "Assets/Images/Users")));
 // ------------------------    RESPONSE HANDLER    -------------------
 app.use((req, res, next) => {
 	const ResponseHandler = require("./Configs/responseHandler");
+	const userAgent = req.headers["user-agent"];
+	// const ipAddress = req.headers["x-forwarded-for"] || req.connection.IP || "Unknown IP";
+
+	// Basic parsing of User-Agent for browser info
+	const browserInfo = (userAgent.match(/(Chrome|Firefox|Safari|MSIE|Trident|Edge|Opera)/) || [])[0] || "Unknown";
+	console.log("Request by user =>", { url: req.url, browserInfo });
+	console.log("===============================================================");
 	res.handler = new ResponseHandler(req, res);
 	next();
 });

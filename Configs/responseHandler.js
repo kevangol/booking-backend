@@ -20,6 +20,7 @@ We have sent an email to %s,
     value : "value of %s"
 }
 */
+const chalk = require("chalk");
 
 class ResponseHandler {
 	constructor(req, res) {
@@ -29,10 +30,7 @@ class ResponseHandler {
 
 	sender(code, message, data, error, info) {
 		this.res.status(code).json({
-			message:
-				typeof message === "string"
-					? this.res.__(message)
-					: this.res.__(message.key, message.value),
+			message: typeof message === "string" ? this.res.__(message) : this.res.__(message.key, message.value),
 			data,
 			error: info,
 		});
@@ -55,115 +53,56 @@ class ResponseHandler {
 
 	// 2XX SUCCESS
 	success(data, message, info) {
-		const msg =
-			Array.isArray(data) && data.length == 0
-				? "VALIDATION.NOT_FOUND.DATA"
-				: "STATUS.SUCCESS";
+		const msg = Array.isArray(data) && data.length == 0 ? "VALIDATION.NOT_FOUND.DATA" : "STATUS.SUCCESS";
 		this.sender(STATUS_CODES.SUCCESS, message || msg, data, info);
 		// this.sender(STATUS_CODES.SUCCESS, message, data, info);
 	}
 
 	updated(data, message, info) {
-		this.sender(
-			STATUS_CODES.SUCCESS,
-			message || "STATUS.SUCCESS",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.SUCCESS, message || "STATUS.SUCCESS", data, info);
 	}
 
 	created(data, message, info) {
-		this.sender(
-			STATUS_CODES.CREATED,
-			message || "STATUS.CREATED",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.CREATED, message || "STATUS.CREATED", data, info);
 	}
 
 	// 4XX CLIENT ERROR
 	badRequest(message, data, info) {
-		this.sender(
-			STATUS_CODES.BAD_REQUEST,
-			message || "STATUS.BAD_REQUEST",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.BAD_REQUEST, message || "STATUS.BAD_REQUEST", data, info);
 	}
 
 	unauthorized(message, data, info) {
-		this.sender(
-			STATUS_CODES.UNAUTHORIZED,
-			message || "STATUS.UNAUTHORIZED",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.UNAUTHORIZED, message || "STATUS.UNAUTHORIZED", data, info);
 	}
 
 	forbidden(message, data, info) {
-		this.sender(
-			STATUS_CODES.FORBIDDEN,
-			message || "STATUS.FORBIDDEN",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.FORBIDDEN, message || "STATUS.FORBIDDEN", data, info);
 	}
 
 	notFound(message, info) {
-		this.sender(
-			STATUS_CODES.NOT_FOUND,
-			message || "STATUS.NOT_FOUND",
-			info
-		);
+		this.sender(STATUS_CODES.NOT_FOUND, message || "STATUS.NOT_FOUND", info);
 	}
 
 	conflict(message, data, info) {
-		this.sender(
-			STATUS_CODES.CONFLICT,
-			message || "STATUS.CONFLICT",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.CONFLICT, message || "STATUS.CONFLICT", data, info);
 	}
 
 	notAllowed(message, data, info) {
-		this.sender(
-			STATUS_CODES.NOT_ALLOWED,
-			message || "STATUS.NOT_ALLOWED",
-			data,
-			info
-		);
+		this.sender(STATUS_CODES.NOT_ALLOWED, message || "STATUS.NOT_ALLOWED", data, info);
 	}
 
 	preconditionFailed(message, data, info) {
-		this.sender(
-			STATUS_CODES.PRECONDITION_FAILED,
-			message || "STATUS.PRECONDITION_FAILED",
-			data,
-			info,
-			false
-		);
+		this.sender(STATUS_CODES.PRECONDITION_FAILED, message || "STATUS.PRECONDITION_FAILED", data, info, false);
 	}
 
 	validationError(message, error) {
-		this.sender(
-			STATUS_CODES.VALIDATION_ERROR,
-			message || "STATUS.VALIDATION_ERROR",
-			null,
-			null,
-			error,
-			false
-		);
+		this.sender(STATUS_CODES.VALIDATION_ERROR, message || "STATUS.VALIDATION_ERROR", null, null, error, false);
 	}
 
 	// 5XX SERVER ERROR
 	serverError(error) {
-		this.sender(
-			STATUS_CODES.SERVER_ERROR,
-			"STATUS.SERVER_ERROR",
-			undefined,
-			error
-		);
+		this.sender(STATUS_CODES.SERVER_ERROR, "STATUS.SERVER_ERROR", undefined, error);
+		console.log(chalk.bold.red("Server error =====>", error));
 	}
 }
 
