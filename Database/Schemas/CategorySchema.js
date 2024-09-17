@@ -23,11 +23,31 @@ const CategorySchema = new mongoose.Schema(
 			type: Boolean,
 			default: true,
 		},
-		slug: { type: String, required: true, unique: true }, // SEO-friendly URL slug
-		metaDescription: { type: String, maxlength: 160 }, // Meta description for SEO
-		keywords: [String], // Array of SEO keywords
-		canonicalUrl: { type: String, default: "https://www.six.ind.in/" }, // Canonical URL to avoid duplicate content
-		content: { type: String, required: true }, // Main content for the page
+		metaTitle: {
+			type: String,
+			default: "Six App - Rent & Buy Cars, Bikes, Properties, and More",
+		},
+		metaKeywords: {
+			type: String,
+			default:
+				"Six App, rent car, buy second-hand car, buy second-hand bike, best products, lowest price, used cars, used bikes, second-hand property, electronics, appliances, furniture, books, clothing, jobs, movies, events, free auctions, vacation deals",
+		},
+		metaDescription: {
+			type: String,
+			default: "Discover the best deals on cars, bikes, properties, and more on Six App. Shop by categories with the lowest prices and enjoy a seamless experience.",
+		},
+		focusKeyword: {
+			type: String,
+			trim: true,
+			description: "The main keyword or phrase for SEO optimization.",
+		},
+		slugUrl: {
+			type: String,
+			required: true,
+			trim: true,
+			lowercase: true,
+			unique: true,
+		},
 	},
 	{
 		timestamps: {

@@ -25,14 +25,20 @@ module.exports = class {
 		return CarSchema.deleteOne(filter);
 	};
 
+	countCars = (filter) => {
+		return CarSchema.countDocuments(filter).exec();
+	};
+
 	getAllCar = (filter = {}, skip = 0, limit = 10) => {
 		return CarSchema.find(filter)
 			.skip(skip)
 			.limit(limit)
+			.sort({ created_at: -1 })
 			.populate([
 				{
 					path: "userId",
 					strictPopulate: false, // Disable strict populate for this query
+					select: "fullName mobileNumber",
 				},
 				{
 					path: "makeId",
@@ -44,6 +50,14 @@ module.exports = class {
 				},
 				{
 					path: "vehicleTypeId",
+					strictPopulate: false,
+				},
+				{
+					path: "colorId",
+					strictPopulate: false,
+				},
+				{
+					path: "categoriesId",
 					strictPopulate: false,
 				},
 			])

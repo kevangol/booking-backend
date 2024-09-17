@@ -110,3 +110,9 @@ exports.AUTHTYPES = {
 	APPLE: "apple",
 	MOBILE: "mobile",
 };
+
+exports.IMAGE_KEYS = {
+	CATEGORY: "category",
+	CAR: "car",
+	BIKE: "bike",
+};

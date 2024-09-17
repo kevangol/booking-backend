@@ -26,7 +26,6 @@ const CarSchema = new mongoose.Schema(
 		modelId: { type: mongoose.Schema.Types.ObjectId, ref: "models", required: true },
 		colorId: { type: mongoose.Schema.Types.ObjectId, ref: "colors", required: true },
 		vehicleTypeId: { type: mongoose.Schema.Types.ObjectId, ref: "vehicleType", required: true },
-		images: { type: [String], default: ["https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg", "https://images.hdqwalls.com/download/humanoid-robot-4k-yu-3840x2160.jpg"] },
 		realModel: { type: String },
 		homeTestDrive: { type: Boolean },
 		price: {
@@ -218,6 +217,39 @@ const CarSchema = new mongoose.Schema(
 		isLoan: {
 			type: Boolean,
 			default: false,
+		},
+		description: {
+			type: String,
+			default: "Discover the best deals on cars, bikes, properties, and more on Six App. Shop by categories with the lowest prices and enjoy a seamless experience.",
+		},
+		metaTitle: {
+			type: String,
+			default: "Six App - Rent & Buy Cars, Bikes, Properties, and More",
+		},
+		metaKeywords: {
+			type: String,
+			default:
+				"Six App, rent car, buy second-hand car, buy second-hand bike, best products, lowest price, used cars, used bikes, second-hand property, electronics, appliances, furniture, books, clothing, jobs, movies, events, free auctions, vacation deals",
+		},
+		metaDescription: {
+			type: String,
+			default: "Discover the best deals on cars, bikes, properties, and more on Six App. Shop by categories with the lowest prices and enjoy a seamless experience.",
+		},
+		slugUrl: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		isPublished: {
+			type: Boolean,
+			default: false,
+		},
+		isActive: {
+			type: Boolean,
+			default: true,
+		},
+		images: {
+			type: [String],
 		},
 	},
 	{

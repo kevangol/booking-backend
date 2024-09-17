@@ -1,8 +1,12 @@
 const { body } = require("express-validator");
 
 const defaultValidation = [
+	// Title
 	body("title").isString().isLength({ min: 3 }).withMessage("Title is required and must be at least 3 characters long"),
+
+	// Color
 	body("color").isString().isLength({ max: 50 }).withMessage("Color must be a string with a maximum length of 50 characters."),
+
 	// MakeId
 	body("makeId").isMongoId().withMessage("MakeId must be a valid MongoDB ObjectId"),
 
@@ -12,13 +16,8 @@ const defaultValidation = [
 	// VehicleTypeId
 	body("vehicleTypeId").isMongoId().withMessage("VehicleTypeId must be a valid MongoDB ObjectId"),
 
-	// Images
-	// body("images")
-	// 	.optional()
-	// 	.isArray()
-	// 	.withMessage("Images must be an array of strings")
-	// 	.custom((images) => images.every((img) => typeof img === "string"))
-	// 	.withMessage("Each image URL must be a string"),
+	// VehicleTypeId
+	body("categoriesId").isMongoId().withMessage("VehicleTypeId must be a valid MongoDB ObjectId"),
 
 	// RealModel
 	body("realModel").optional().isString().withMessage("RealModel must be a string"),
@@ -64,7 +63,11 @@ const defaultValidation = [
 
 	// Location
 	body("location").isString().withMessage("Location is required and must be a string"),
+
+	// Latitude
 	body("latitude").isString().withMessage("Latitude is required and must be a string"),
+
+	// Longitude
 	body("longitude").isString().withMessage("Longitude is required and must be a string"),
 
 	// Mileage
@@ -149,16 +152,16 @@ const defaultValidation = [
 	body("suspensionRearType").optional().isString().isIn(["MacPherson Strut", "Double Wishbone", "Multi-Link"]).withMessage("SuspensionRearType must be one of the predefined options"),
 
 	// SteeringAdjustmentType
-	body("steeringAdjustmentType").optional().isString().isIn(["Tilt", "Telescopic", "Tilt and Telescopic"]).withMessage("SteeringAdjustmentType must be one of the predefined options"),
+	body("steeringAdjustmentType").optional().isString().withMessage("SteeringAdjustmentType must be a string"),
 
 	// FrontBreakType
-	body("frontBreakType").optional().isString().isIn(["Disc", "Drum"]).withMessage("FrontBreakType must be one of the predefined options"),
+	body("frontBreakType").optional().isString().isIn(["Disc", "Drum"]).withMessage("FrontBreakType must be either 'Disc' or 'Drum'"),
 
 	// RearBreakType
-	body("rearBreakType").optional().isString().isIn(["Disc", "Drum"]).withMessage("RearBreakType must be one of the predefined options"),
+	body("rearBreakType").optional().isString().isIn(["Disc", "Drum"]).withMessage("RearBreakType must be either 'Disc' or 'Drum'"),
 
 	// SteeringType
-	body("steeringType").optional().isString().isIn(["Rack and Pinion", "Recirculating Ball"]).withMessage("SteeringType must be one of the predefined options"),
+	body("steeringType").optional().isString().withMessage("SteeringType must be a string"),
 
 	// MinimumTurningRadius
 	body("minimumTurningRadius").optional().isNumeric().isFloat({ min: 0 }).withMessage("MinimumTurningRadius must be a non-negative number"),

@@ -1,10 +1,39 @@
+const { IMAGE_KEYS } = require("../Configs/constants");
+const S3Manager = require("../Helpers/AwsHelper");
+const buildFilter = require("../Helpers/CarFilter");
+const paginate = require("../Helpers/Pagination");
+const checkSellProduct = require("../middleware/sellProduct");
+
 const CarModel = new (require("../Models/CarModel"))();
 const CarMakeModel = new (require("../Models/MakesModel"))();
 const CarModelModel = new (require("../Models/ModelsModel"))();
 
 module.exports = class {
-	addCar = async (req, res) => {
+	addCar = async (req, res, next) => {
 		try {
+			await checkSellProduct(req, res, next);
+			if (req.body.images && req.body.images.length > 0) {
+				try {
+					// Upload images to S3 and wait for all uploads to complete
+					await Promise.all(
+						req.body.images.map(async (imageObj) => {
+							try {
+								await S3Manager.S3UploadBase64(imageObj.image, IMAGE_KEYS.CAR, imageObj.imageName);
+							} catch (error) {
+								console.error(`Error uploading image: ${imageObj.imageName}`, error);
+								// Optionally handle the error, e.g., continue or throw
+							}
+						})
+					);
+
+					// Update req.body.images to only include imageName
+					req.body.images = req.body.images.map((imageObj) => imageObj.imageName);
+				} catch (error) {
+					console.error("Error processing images:", error);
+					// Handle the error, e.g., return an error response or throw
+				}
+			}
+
 			const car = await CarModel.createCar({ userId: req.user, ...req.body });
 			return res.handler.success(car);
 		} catch (err) {
@@ -33,8 +62,46 @@ module.exports = class {
 
 	getAllCar = async (req, res) => {
 		try {
-			const car = await CarModel.getAllCar({}, req.query.skip, req.query.limit);
-			return res.handler.success(car);
+			const { limit, skip, currentPage } = paginate(req.query);
+
+			const filter = await buildFilter(req.query);
+
+			// Get the total count of cars
+			const count = await CarModel.countCars(filter);
+
+			// Fetch the paginated list of cars
+			const car = await CarModel.getAllCar(filter, skip, limit);
+
+			const updatedCars = await Promise.all(
+				car.map(async (car) => {
+					// Update the images field
+					const updatedImages = await Promise.all(
+						car.images.map(async (image) => {
+							if (image) {
+								return await S3Manager.S3GetImage(`${process.env.AWS_PROJECT_NAME}/${IMAGE_KEYS.CAR}/${image}`);
+							}
+							return null; // If image is null or undefined, return null
+						})
+					);
+
+					// Return the updated car object with the updated image URLs
+					return {
+						...car,
+						images: updatedImages,
+					};
+				})
+			);
+			// Calculate total pages
+			const totalPages = Math.ceil(count / limit);
+
+			// Respond with the data
+			return res.handler.success({
+				total: count,
+				perPage: limit,
+				totalPages,
+				currentPage: currentPage,
+				list: updatedCars,
+			});
 		} catch (err) {
 			return res.handler.serverError(err);
 		}
@@ -42,8 +109,41 @@ module.exports = class {
 
 	getMyAllCar = async (req, res) => {
 		try {
+			const { limit, skip, currentPage } = paginate(req.query);
+
+			const count = await CarModel.countCars({ userId: req.user });
+
 			const car = await CarModel.getAllCar({ userId: req.user }, req.query.skip, req.query.limit);
-			return res.handler.success(car);
+
+			const updatedCars = await Promise.all(
+				car.map(async (car) => {
+					// Update the images field
+					const updatedImages = await Promise.all(
+						car.images.map(async (image) => {
+							if (image) {
+								return await S3Manager.S3GetImage(`${process.env.AWS_PROJECT_NAME}/${IMAGE_KEYS.CAR}/${image}`);
+							}
+							return null; // If image is null or undefined, return null
+						})
+					);
+
+					// Return the updated car object with the updated image URLs
+					return {
+						...car,
+						images: updatedImages,
+					};
+				})
+			);
+			// Calculate total pages
+			const totalPages = Math.ceil(count / limit);
+
+			return res.handler.success({
+				total: count,
+				perPage: limit,
+				totalPages,
+				currentPage: currentPage,
+				list: updatedCars,
+			});
 		} catch (err) {
 			return res.handler.serverError(err);
 		}

@@ -3,11 +3,10 @@ const router = express.Router();
 const CarValidator = require("../middleware/validators/CarValidator");
 const CmsCarController = new (require("../Controllers/CarController"))();
 const Authentication = require("../middleware/authentication");
-const SellerVerification = require("../middleware/sellProduct");
+const checkSellProduct = require("../middleware/sellProduct");
 
 //1st pass from---------------------Middleware applying---------------------
 router.use(Authentication.userAccess);
-// router.use(SellerVerification.checkSellProduct);
 
 /**------1
 /**
@@ -28,6 +27,12 @@ router.use(Authentication.userAccess);
  *               title:
  *                 type: string
  *                 description: The title of the car
+ *                 example: Honda City
+ *               categoriesId:
+ *                 type: string
+ *                 format: objectId
+ *                 description: The category ID of the car
+ *                 example: 64f30a7f52a5e2dcb05fa1e9
  *               makeId:
  *                 type: string
  *                 format: objectId
@@ -36,6 +41,10 @@ router.use(Authentication.userAccess);
  *                 type: string
  *                 format: objectId
  *                 description: The model ID of the car
+ *               colorId:
+ *                 type: string
+ *                 format: objectId
+ *                 description: The color ID of the car
  *               vehicleTypeId:
  *                 type: string
  *                 format: objectId
@@ -52,8 +61,9 @@ router.use(Authentication.userAccess);
  *                 description: The price of the car
  *               priceUnit:
  *                 type: string
- *                 enum: [RS, USD]
  *                 description: The currency unit of the price
+ *                 enum: [RS, USD]
+ *                 example: RS
  *               transferTax:
  *                 type: number
  *                 format: float
@@ -68,16 +78,16 @@ router.use(Authentication.userAccess);
  *                 description: The year the car was registered
  *               fuel:
  *                 type: string
- *                 enum: [Petrol, Diesel, Electric, CNG, LPG]
  *                 description: The fuel type of the car
+ *                 enum: [Petrol, Diesel, Electric, CNG, LPG]
  *               kmDriven:
  *                 type: number
  *                 format: float
  *                 description: The distance driven in kilometers
  *               transmission:
  *                 type: string
- *                 enum: [Manual, Automatic, CVT, DCT]
  *                 description: The transmission type of the car
+ *                 enum: [Manual, Automatic, CVT, DCT]
  *               numberOfOwner:
  *                 type: integer
  *                 format: int32
@@ -88,8 +98,8 @@ router.use(Authentication.userAccess);
  *                 description: The validity date of the insurance
  *               insuranceType:
  *                 type: string
- *                 enum: [Third-Party, Comprehensive]
  *                 description: The type of insurance
+ *                 enum: [Third-Party, Comprehensive]
  *               rto:
  *                 type: string
  *                 format: objectId
@@ -97,6 +107,10 @@ router.use(Authentication.userAccess);
  *               location:
  *                 type: string
  *                 description: The location of the car
+ *               city:
+ *                 type: string
+ *                 format: objectId
+ *                 description: The city where the car is located
  *               mileage:
  *                 type: number
  *                 format: float
@@ -155,16 +169,15 @@ router.use(Authentication.userAccess);
  *               valve:
  *                 type: string
  *                 description: The type of valves used
- *               color:
- *                 type: string
- *                 maxLength: 50
- *                 description: The color of the bike.
  *               limitedSlipDifferential:
  *                 type: boolean
  *                 description: Whether the car has a limited-slip differential
  *               mildHybrid:
  *                 type: boolean
  *                 description: Whether the car is a mild hybrid
+ *               isLoan:
+ *                 type: boolean
+ *                 description: Does you provide loan for client?
  *               turboCharger:
  *                 type: boolean
  *                 description: Whether the car has a turbocharger
@@ -191,32 +204,65 @@ router.use(Authentication.userAccess);
  *                 description: Whether the car has multiple driver modes
  *               suspensionFrontType:
  *                 type: string
- *                 enum: [MacPherson Strut, Double Wishbone, Multi-Link]
  *                 description: The type of front suspension
+ *                 enum: [MacPherson Strut, Double Wishbone, Multi-Link]
  *               suspensionRearType:
  *                 type: string
- *                 enum: [MacPherson Strut, Double Wishbone, Multi-Link]
  *                 description: The type of rear suspension
+ *                 enum: [MacPherson Strut, Double Wishbone, Multi-Link]
  *               steeringAdjustmentType:
  *                 type: string
- *                 enum: [Tilt, Telescopic, Tilt and Telescopic]
  *                 description: The type of steering adjustment
+ *                 enum: [Tilt, Telescopic, Tilt and Telescopic]
  *               frontBreakType:
  *                 type: string
- *                 enum: [Disc, Drum]
  *                 description: The type of front brakes
+ *                 enum: [Disc, Drum]
  *               rearBreakType:
  *                 type: string
- *                 enum: [Disc, Drum]
  *                 description: The type of rear brakes
+ *                 enum: [Disc, Drum]
  *               steeringType:
  *                 type: string
- *                 enum: [Rack and Pinion, Recirculating Ball]
  *                 description: The type of steering
+ *                 enum: [Rack and Pinion, Recirculating Ball]
  *               minimumTurningRadius:
  *                 type: number
  *                 format: float
  *                 description: The minimum turning radius of the car
+  *               description:
+ *                 type: string
+ *                 default: "Discover the best deals on cars, bikes, properties, and more on Six App. Shop by categories with the lowest prices and enjoy a seamless experience."
+ *                 description: Description of the car listing
+ *               metaTitle:
+ *                 type: string
+ *                 default: "Six App - Rent & Buy Cars, Bikes, Properties, and More"
+ *                 description: Meta title for the car listing
+ *               metaKeywords:
+ *                 type: string
+ *                 default: "Six App, rent car, buy second-hand car, buy second-hand bike, best products, lowest price, used cars, used bikes, second-hand property, electronics, appliances, furniture, books, clothing, jobs, movies, events, free auctions, vacation deals"
+ *                 description: Meta keywords for SEO
+ *               metaDescription:
+ *                 type: string
+ *                 default: "Discover the best deals on cars, bikes, properties, and more on Six App. Shop by categories with the lowest prices and enjoy a seamless experience."
+ *                 description: Meta description for the car listing
+ *               slugUrl:
+ *                 type: string
+ *                 description: A unique slug for the URL
+ *                 example: "six-app-rent-buy-cars-bikes"
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     image:
+ *                       type: string
+ *                       description: Base64 encoded image data
+ *                       example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+ *                     imageName:
+ *                       type: string
+ *                       description: The name of the image file
+ *                       example: "car1.png"
  *     responses:
  *       '201':
  *         description: Car created successfully
@@ -272,6 +318,72 @@ router.use(Authentication.userAccess);
  *           type: integer
  *           example: 10
  *         description: The maximum number of items to return
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description:
+ *       - in: query
+ *         name: color
+ *         schema:
+ *           type: string
+ *           example: Red
+ *         description:
+ *       - in: query
+ *         name: Brand
+ *         schema:
+ *           type: string
+ *           example: Porsche
+ *         description:
+ *       - in: query
+ *         name: Models
+ *         schema:
+ *           type: string
+ *           example: Palisade
+ *         description:
+ *       - in: query
+ *         name: MinPrice
+ *         schema:
+ *           type: string
+ *           example: 50000
+ *         description:
+ *       - in: query
+ *         name: MaxPrice
+ *         schema:
+ *           type: string
+ *           example: 800000
+ *         description:
+ *       - in: query
+ *         name: Year
+ *         schema:
+ *           type: string
+ *           example: 2020
+ *         description:
+ *       - in: query
+ *         name: Year
+ *         schema:
+ *           type: string
+ *           example: 2020
+ *         description:
+ *       - in: query
+ *         name: Seats
+ *         schema:
+ *           type: string
+ *           example: 4
+ *         description:
+ *       - in: query
+ *         name: Owner
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description:
+ *       - in: query
+ *         name: FuelType
+ *         schema:
+ *           type: string
+ *           example: Petrol
+ *         description:
  *     responses:
  *       200:
  *         description:
@@ -297,6 +409,12 @@ router.use(Authentication.userAccess);
  *           type: integer
  *           example: 10
  *         description: The maximum number of items to return
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description:
  *     responses:
  *       200:
  *         description:
@@ -326,7 +444,7 @@ router.use(Authentication.userAccess);
  *         description: 
  */
 
-router.route("/add").post(CarValidator.addCar, CmsCarController.addCar);
+router.route("/add").post(CarValidator.addCar, checkSellProduct, CmsCarController.addCar);
 
 router.route("/").get(CmsCarController.getAllCar);
 

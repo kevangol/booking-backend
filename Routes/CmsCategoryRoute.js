@@ -107,4 +107,6 @@ router.route("/add/All").post(CmsCategoryController.addAllCategory);
  */
 router.route("/").get(CmsCategoryController.getAllCategory);
 
+router.route("/update").put(CmsCategoryController.updateCategory);
+
 module.exports = router;
