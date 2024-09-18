@@ -322,67 +322,79 @@ router.use(Authentication.userAccess);
  *         name: page
  *         schema:
  *           type: integer
- *           example: 10
+ *           example: 1
  *         description:
  *       - in: query
  *         name: color
  *         schema:
  *           type: string
- *           example: Red
+ *           example:
  *         description:
  *       - in: query
  *         name: Brand
  *         schema:
  *           type: string
- *           example: Porsche
+ *           example:
  *         description:
  *       - in: query
  *         name: Models
  *         schema:
  *           type: string
- *           example: Palisade
+ *           example:
  *         description:
  *       - in: query
  *         name: MinPrice
  *         schema:
  *           type: string
- *           example: 50000
+ *           example:
  *         description:
  *       - in: query
  *         name: MaxPrice
  *         schema:
  *           type: string
- *           example: 800000
+ *           example:
  *         description:
  *       - in: query
  *         name: Year
  *         schema:
  *           type: string
- *           example: 2020
- *         description:
- *       - in: query
- *         name: Year
- *         schema:
- *           type: string
- *           example: 2020
+ *           example:
  *         description:
  *       - in: query
  *         name: Seats
  *         schema:
  *           type: string
- *           example: 4
+ *           example:
  *         description:
  *       - in: query
  *         name: Owner
  *         schema:
  *           type: integer
- *           example: 10
+ *           example:
  *         description:
  *       - in: query
  *         name: FuelType
  *         schema:
  *           type: string
- *           example: Petrol
+ *           example:
+ *         description:
+ *       - in: query
+ *         name: KmsDriven
+ *         schema:
+ *           type: string
+ *           example:
+ *         description:
+ *       - in: query
+ *         name: BodyType
+ *         schema:
+ *           type: string
+ *           example:
+ *         description:
+ *       - in: query
+ *         name: Transmission
+ *         schema:
+ *           type: string
+ *           example:
  *         description:
  *     responses:
  *       200:

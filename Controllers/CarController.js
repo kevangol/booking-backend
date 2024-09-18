@@ -63,6 +63,7 @@ module.exports = class {
 	getAllCar = async (req, res) => {
 		try {
 			const { limit, skip, currentPage } = paginate(req.query);
+			// console.log("+++++++", JSON.parse(req.query.Seats));
 
 			const filter = await buildFilter(req.query);
 
