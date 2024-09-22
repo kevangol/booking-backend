@@ -8,6 +8,9 @@ const dbName = process.env.DB_NAME;
 mongoose
 	.connect(process.env.MONGODB_URL, {
 		dbName,
+		ssl: true,
+		serverSelectionTimeoutMS: 5000,
+		socketTimeoutMS: 45000,
 	})
 	.then(() => {
 		const message = `${dbName} database connected successfully :)`;

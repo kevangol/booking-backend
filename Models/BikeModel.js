@@ -25,6 +25,10 @@ module.exports = class {
 		return BikeSchema.deleteOne(filter);
 	};
 
+	countBikes = (filter) => {
+		return BikeSchema.countDocuments(filter).exec();
+	};
+
 	getAllBike = (filter = {}, skip = 0, limit = 10) => {
 		return BikeSchema.find(filter)
 			.skip(skip)

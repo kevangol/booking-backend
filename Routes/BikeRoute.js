@@ -177,6 +177,12 @@ router.use(Authentication.userAccess);
  *           type: integer
  *           example: 10
  *         description: The maximum number of items to return
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description:
  *     responses:
  *       200:
  *         description:

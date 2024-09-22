@@ -99,13 +99,18 @@ app.use(express.static(path.join(__dirname, "Logs")));
 
 app.use(actuator({ infoGitMode: "full" }));
 
+// Increase the payload size limit to 50MB for JSON and URL-encoded requests
+app.use(express.json({ limit: "50mb" })); // Handles application/json
+app.use(express.urlencoded({ limit: "50mb", extended: true })); // Handles URL-encoded data
+
+// Body Parser specific setup (if you need to support encrypted-json or backward compatibility)
+// You don't need this if express.json() is already handling it
 app.use(
 	bodyParser.json({
-		type: ["application/json", "application/encrypted-json", "multipart/form-data; boundary=<calculated when request is sent>"],
+		limit: "50mb",
+		type: ["application/json", "application/encrypted-json"],
 	})
 );
-// app.use(bodyParser.json()); // ALLOW APPLICATION JSON
-app.use(express.urlencoded({ extended: true })); // ALLOW APPLICATION JSON
 app.use(bodyParser.urlencoded({ extended: false })); // ALLOW URL ENCODED PARSER
 app.use(cors()); // ALLOWED ALL CROSS ORIGIN REQUESTS
 app.use(express.static(__dirname + "/Assets")); // SERVE STATIC IMAGES FROM ASSETS FOLDER
@@ -137,8 +142,13 @@ appRoutes(app);
 
 // --------------------------    GLOBAL ERROR HANDLER    ------------------
 app.use((err, req, res, next) => {
+	console.log(err);
 	if (res.headersSent) {
 		return next(err);
+	}
+	if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+		// This handles malformed JSON errors
+		return res.status(400).json({ message: "JSON data is not proper" });
 	}
 	res.handler.serverError(err);
 });
